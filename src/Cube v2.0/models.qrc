@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Objects/Cat_.obj</file>
+        <file>Objects/cube.obj</file>
+        <file>Objects/eyeball.obj</file>
+        <file>Objects/sphere.obj</file>
+    </qresource>
+</RCC>

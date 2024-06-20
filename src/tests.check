@@ -1,0 +1,81 @@
+#include "Cube v2.0/affine.h"
+
+
+#tcase affine
+
+
+#test parser_test
+VertexData cube;
+parser(&cube, "Cube v2.0/Objects/eyeball.obj");
+ck_assert_int_eq(cube.count_of_vertexes, 9667);
+ck_assert_int_eq(cube.count_of_facets, 9344);
+free_data(&cube);
+
+
+#test shift
+VertexData test1;
+parser(&test1, "Cube v2.0/Objects/eyeball.obj");
+shift_x(&test1, 1);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[1][0], 0.470655, 1e-6);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[2][0], 0.469028, 1e-6);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[3][0], 0.541983, 1e-6);
+
+
+shift_y(&test1, 2);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[1][1], 2.050624, 1e-6);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[2][1], 2.025354, 1e-6);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[3][1], 2.043585, 1e-6);
+
+
+
+shift_z(&test1, 3);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[1][2], 4.896416, 1e-6);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[2][2], 4.896426, 1e-6);
+ck_assert_double_eq_tol(test1.matrix_3d.matrix[3][2], 4.913417, 1e-6);
+
+free_data(&test1);
+
+#test rotate
+VertexData test2;
+parser(&test2, "Cube v2.0/Objects/eyeball.obj");
+double x = test2.matrix_3d.matrix[1][0];
+double y = test2.matrix_3d.matrix[1][1];
+double z = test2.matrix_3d.matrix[1][2];
+rotate_ox(&test2, 5);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[1][0], x, 1e-5);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[2][1],  1.82572, 1e-5);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[3][2], 0.500969, 1e-5);
+
+
+
+x = test2.matrix_3d.matrix[2][0];
+y = test2.matrix_3d.matrix[2][1];
+z = test2.matrix_3d.matrix[2][2];
+rotate_oy(&test2, 12);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[2][0], -0.723664, 1e-5);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[2][1],  y, 1e-5);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[2][2], 0.148525, 1e-5);
+
+
+
+x = test2.matrix_3d.matrix[3][0];
+y = test2.matrix_3d.matrix[3][1];
+z = test2.matrix_3d.matrix[3][2];
+rotate_oz(&test2, -49);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[3][0], 1.56478, 1e-5);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[3][1], 1.18025, 1e-5);
+ck_assert_double_eq_tol(test2.matrix_3d.matrix[3][2], 0.176985, 1e-5);
+
+free_data(&test2);
+
+#test scale
+VertexData test3;
+parser(&test3, "Cube v2.0/Objects/eyeball.obj");
+double x = test3.matrix_3d.matrix[2][0];
+double y = test3.matrix_3d.matrix[2][1];
+double z = test3.matrix_3d.matrix[2][2];
+change_scale(&test3, 5);
+ck_assert_double_eq_tol(test3.matrix_3d.matrix[3][0], -2.29008, 1e-5);
+ck_assert_double_eq_tol(test3.matrix_3d.matrix[3][1], 0.217925, 1e-5);
+ck_assert_double_eq_tol(test3.matrix_3d.matrix[3][2], 9.56708, 1e-5);
+free_data(&test3);
